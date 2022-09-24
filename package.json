@@ -1,0 +1,15 @@
+{
+  "name": "watime",
+  "version": "1.0.0",
+  "description": "discord bot tells the local time based on the user's timezone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "city-timezones": "^1.2.1",
+    "discord.js": "^14.4.0"
+  }
+}
