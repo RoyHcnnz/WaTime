@@ -38,8 +38,9 @@ module.exports = {
 		});
 		let tzlong = date.substring(4);
 		date = new Date()
-			.toLocaleString("en-US", {
+			.toLocaleString("zh-TW", {
 					timeZone: timezone,
+					hour12: false,
 					dateStyle: "short",
 					timeStyle: "short"
         });
