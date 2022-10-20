@@ -16,7 +16,7 @@ for (const subcmdfile of subcommandFiles) {
 	const subcommand = require(filePath);
 
 	subcmdCollection.set(subcommand.subcmd.name, subcommand);
-	slashCmd.addSubcommand(subcommand.subcmd);
+	cmd.addSubcommand(subcommand.subcmd);
 }
 
 module.exports = {

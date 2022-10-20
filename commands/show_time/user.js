@@ -12,7 +12,7 @@ let subcmd = new SlashCommandSubcommandBuilder()
 );
 
 module.exports = {
-	data: subcmd,
+	subcmd: subcmd,
 	async execute(interaction) {
 		let targetUser = interaction.options.getUser('target');
 		let timezone = data[targetUser.id];
@@ -48,7 +48,7 @@ module.exports = {
 					timeStyle: "short"
         });
 		
-		const weekday = date.toLocaleDateString("zh-TW", { weekday: 'short' });
+		const weekday = (new Date()).toLocaleDateString("zh-TW", { weekday: 'short' });
 
 		await interaction.reply(`${targetUser.tag}: ${timezone}, ${tzlong} \n${date} ${weekday}`);
 	}
