@@ -32,8 +32,8 @@ module.exports = {
 			});
 			await interaction.reply(cityOptions);
 			// set up for user's respond;
-			//const filter = m => interaction.user.id === m.author.id;
-			const filter = m => true;
+			const filter = m => interaction.user.id === m.author.id;
+			//const filter = m => true;
 
 			await interaction.channel.awaitMessages({filter, time: 10000, max:1})
 				.then(messages => {

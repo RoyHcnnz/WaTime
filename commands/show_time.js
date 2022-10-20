@@ -1,50 +1,29 @@
-const { SlashCommandBuilder} = require('discord.js');
-const data = require('../fakedatabase.json');
+const { SlashCommandBuilder, Collection } = require('discord.js');
+const fs = require('node:fs');
+const path = require('node:path');
+
+let cmd = new SlashCommandBuilder()
+		.setName('show_time')
+		.setDescription("Show local time of a user or a city")
+;
+
+let subcmdCollection = new Collection();
+const subcommandsPath = path.resolve('commands/show_time/');
+const subcommandFiles = fs.readdirSync(subcommandsPath).filter(file => file.endsWith('.js'));
+
+for (const subcmdfile of subcommandFiles) {
+	const filePath = path.join(subcommandsPath, subcmdfile);
+	const subcommand = require(filePath);
+
+	subcmdCollection.set(subcommand.subcmd.name, subcommand);
+	slashCmd.addSubcommand(subcommand.subcmd);
+}
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('show_time')
-		.setDescription("Show user's local time based on its timezone")
-		.addUserOption(option =>
-			option.setName("target")
-				.setDescription('The user you want to check time')
-				.setRequired(true)
-		),
+	data: cmd,
 	async execute(interaction) {
-		let targetUser = interaction.options.getUser('target');
-		let timezone = data[targetUser.id];
-		if(!timezone){
-			await interaction.reply(`${targetUser.tag} has not set a local timezone`);
-			return;
-		}
-		/*
-		let date = new Date()
-			.toLocaleString("en-US", {
-					timeZone: timezone,
-					weekday: "short",
-					year: "numeric",
-					month: "numeric",
-					day: "numeric",
-					hour: "numeric",
-					hour12: false,
-					minute: "numeric",
-					timeZoneName: "long"
-		});
-*/
-		let date = new Date().toLocaleString("zh-TW",{
-			timeZone: timezone,
-			day: "2-digit",
-			timeZoneName: "long"
-		});
-		let tzlong = date.substring(4);
-		date = new Date()
-			.toLocaleString("zh-TW", {
-					timeZone: timezone,
-					hour12: false,
-					dateStyle: "short",
-					timeStyle: "short"
-        });
-
-		await interaction.reply(`${targetUser.tag}: ${timezone}, ${tzlong} \n${date}`);
+		let subcmdName = interaction.options.getSubcommand();
+		let subcmd = subcmdCollection.get(subcmdName);
+		await subcmd.execute(interaction);
 	},
 };
