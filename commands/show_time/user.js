@@ -34,22 +34,26 @@ module.exports = {
 					timeZoneName: "long"
 		});
 */
-		let date = new Date().toLocaleString("zh-TW",{
+		const date = new Date();
+		const tzlong = new Date().toLocaleString("zh-TW",{
 			timeZone: timezone,
 			day: "2-digit",
 			timeZoneName: "long"
-		});
-		let tzlong = date.substring(4);
-		date = new Date()
-			.toLocaleString("zh-TW", {
+		}).substring(4);
+		
+		const dateStr = new Date()
+			.toLocaleString("zh-CN", {
 					timeZone: timezone,
 					hour12: false,
 					dateStyle: "short",
 					timeStyle: "short"
         });
 		
-		const weekday = (new Date()).toLocaleDateString("zh-TW", { weekday: 'short' });
+		const weekday = date.toLocaleDateString("zh-TW", { 
+			weekday: 'short', 
+			timeZone: timezone 
+		});
 
-		await interaction.reply(`${targetUser.tag}: ${timezone}, ${tzlong} \n${date} ${weekday}`);
+		await interaction.reply(`${targetUser.tag}: ${timezone}, ${tzlong} \n${dateStr} ${weekday}`);
 	}
 }
